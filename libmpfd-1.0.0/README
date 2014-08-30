@@ -1,0 +1,20 @@
+1. Known Bugs
+
+1.1 Crashes when file names contain blanks
+
+2. The "About" From Grigory Dmitrievich Gorelov's site
+
+MPFDParser was created to process incoming POST data from client's browser.
+It is useful for programming web interface for embedded devices line one chip
+computer or electronic tools, developing server-side CGI and FastCGI
+applications.
+
+When invoked, the library accepts and parses incoming POST data part by part.
+This is a good solution I think because large files content, if any, is
+trasferred directly to disk (you also can direct it to memory if you wish).
+Field content is always stored in memory.
+
+You do not need to compile any third-party libraries to use MPFDParser, it is
+dependency free and ultra lightweight.
+
+MPFDParser is distributed under GNU Lesser General Public License.

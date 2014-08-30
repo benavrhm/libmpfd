@@ -1,4 +1,4 @@
-AC_INIT(src/Parser.cpp)
+AC_INIT(libmpfd/Parser.cpp)
 AC_CONFIG_MACRO_DIR([m4])
 
 PACKAGE=libmpfd
@@ -9,4 +9,4 @@ LT_INIT
 
 AC_PROG_CXX
 
-AC_OUTPUT(Makefile src/Makefile)
+AC_OUTPUT(Makefile libmpfd/Makefile)

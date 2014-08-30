@@ -15,6 +15,7 @@ all :
 	automake -a -c
 
 pack :
+	rm -f $(MPFD).tar.xz
 	tar cvf $(MPFD).tar $(MPFD); \
 	xz $(MPFD).tar
 

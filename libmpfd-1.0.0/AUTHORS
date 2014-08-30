@@ -1,0 +1,13 @@
+The libmpfd library was written by Jonathan Ben-Avraham <yba@tkos.co.il>
+and is derived from the MPFDParser-1.1.1 package written by Grigory
+Dmitrievich Gorelov available at http://grigory.info/.
+
+Copyright Grigory Dmitrievich Gorelov 2011
+Copyright Jonathan Ben-Avraham 2014
+
+The code is distributed under the GNU LGPLv3 license available at
+https://www.gnu.org/licenses/lgpl-3.0.txt
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. You use this program at your own risk.
