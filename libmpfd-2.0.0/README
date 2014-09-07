@@ -1,6 +1,10 @@
+libmpfd-2.0.0 README, September 7, 2014
+Jonathan Ben-Avraham <yba@tkos.co.il>
+
 1. Known Bugs
 
 1.1 Crashes when file names contain blanks
+
 
 2. The "About" From Grigory Dmitrievich Gorelov's site
 
@@ -18,3 +22,14 @@ You do not need to compile any third-party libraries to use MPFDParser, it is
 dependency free and ultra lightweight.
 
 MPFDParser is distributed under GNU Lesser General Public License.
+
+
+3. Additional Comments from Jonathan Ben-Avraham, September 2014
+
+Note that the MPDF Parser class parses the data portion of the HTTP request. It
+does not parse the HTTP headers, as it assumes that you are using a server such
+as mongoose or lighttpd that parses the HTTP request headers for you and passes
+you the data portion of the request.
+
+In a future version we will provide an HTTP header parser for use with simpler
+servers that do not parse the request headers.

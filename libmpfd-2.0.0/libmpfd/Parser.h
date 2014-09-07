@@ -6,8 +6,6 @@
     Contacts and other info are on the WEB page:  grigory.info/MPFDParser
  */
 
-
-
 #ifndef _PARSER_H
 #define	_PARSER_H
 
@@ -30,14 +28,15 @@ public:
 	static const int StoreUploadedFilesInFilesystem = 1,
 		StoreUploadedFilesInMemory = 2;
 
+	Parser(
+		const char *content_type,
+		const char *file_dir="/tmp",
+		int max_collector_length=16*1024*1024
+	);
 
-	Parser();
 	~Parser();
 
-	void SetContentType(const std::string type);
-
 	void AcceptSomeData(const char *data, const long length);
-
 	void SetMaxCollectedDataLength(long max);
 	void SetTempDirForFileUpload(std::string dir);
 	std::string GetTempDirForFileUpload();
@@ -65,9 +64,12 @@ private:
 	long ContentLength;
 	char *DataCollector;
 	long DataCollectorLength, MaxDataCollectorLength;
+
+	void SetContentType(const std::string type);
 	bool FindStartingBoundaryAndTruncData();
 	void _ProcessData();
 	void _ParseHeaders(std::string headers);
+	bool FindContentType();
 	bool WaitForHeadersEndAndParseThem();
 	void TruncateDataCollectorFromTheBeginning(long n);
 	long BoundaryPositionInDataCollector();

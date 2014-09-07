@@ -5,7 +5,7 @@ ACLOCAL_FILES = autom4te.cache aclocal.m4
 AUTOCONF_FILES = configure
 AUTOMAKE_FILES = depcomp missing Makefile.in src/Makefile.in
 
-MPFD = libmpfd-1.0.0
+MPFD = libmpfd-2.0.0
 
 all :
 	cd $(MPFD); \

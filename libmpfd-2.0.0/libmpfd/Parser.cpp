@@ -11,6 +11,32 @@
 
 
 /**
+	Implementation of strnstr for future use in parsing HTTP headers.
+ */
+static char *strnstr(const char *haystack, const char *needle, size_t len)
+{
+	int i;
+	size_t needle_len;
+
+	if (0 == (needle_len = strlen(needle)))
+		return (char *)haystack;
+
+	/* Limit the search if haystack is shorter than 'len' */
+	len = strnlen(haystack, len);
+
+	for (i=0; i<(int)(len-needle_len); i++)
+	{
+		if ((haystack[0] == needle[0]) &&
+                	(0 == strncmp(haystack, needle, needle_len)))
+			return (char *)haystack;
+
+		haystack++;
+	}
+	return NULL;
+}
+
+
+/**
  */
 std::map<std::string, MPFD::Field *> MPFD::Parser::GetFieldsMap()
 {
@@ -30,18 +56,24 @@ MPFD::Field * MPFD::Parser::GetField(std::string Name)
 
 
 /**
+	In order to call this constructor you need to have already parsed the
+	HTTP headers of the request. The current MPFD implementation does not
+	provide header parsing. This is not a problem when using Mongoose or
+	similar.
  */
-MPFD::Parser::Parser()
+MPFD::Parser::Parser(
+		const char *content_type,
+		const char *file_dir,
+		int max_collector_length) :
+	DataCollector(NULL),
+	DataCollectorLength(0),
+	_HeadersOfTheFieldAreProcessed(false),
+	CurrentStatus(Status_LookingForStartingBoundary),
+	MaxDataCollectorLength(max_collector_length)
 {
-	DataCollector = NULL;
-	DataCollectorLength = 0;
-	_HeadersOfTheFieldAreProcessed = false;
-	CurrentStatus = Status_LookingForStartingBoundary;
-
-	// Default 16 Mb default data collector size.
-	MaxDataCollectorLength = 16 * 1024 * 1024;
-
 	SetUploadedFilesStorage(StoreUploadedFilesInFilesystem);
+	TempDirForFileUpload = file_dir;
+	SetContentType(content_type);
 }
 
 
@@ -69,7 +101,6 @@ void MPFD::Parser::SetContentType(const std::string type)
 			type + std::string("\""));
 	}
 
-
 	int bp = type.find("boundary=");
 
 	if (bp == std::string::npos)
@@ -84,6 +115,7 @@ void MPFD::Parser::SetContentType(const std::string type)
  */
 void MPFD::Parser::AcceptSomeData(const char *data, const long length)
 {
+
 	if (0 >= Boundary.length())
 		throw MPFD::Exception("Accepting data, but content type was "
 			"not set.");
@@ -147,6 +179,9 @@ void MPFD::Parser::_ProcessData()
 	} while (NeedToRepeat);
 }
 
+
+/**
+ */
 bool MPFD::Parser::ProcessContentOfTheField()
 {
 	long BoundaryPosition = BoundaryPositionInDataCollector();

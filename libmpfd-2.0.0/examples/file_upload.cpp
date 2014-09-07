@@ -22,8 +22,12 @@ static int handle_request(struct mg_connection *conn)
 	{
 		if (last)
 		{
-			// Catch the last chunk if any
-			POSTParser->AcceptSomeData(conn->content, conn->content_len);
+			// Get the last chunk if any
+			try {
+				POSTParser->AcceptSomeData(conn->content, conn->content_len);
+			} catch (MPFD::Exception e) {
+				printf(__FILE__ " %d: %s\n", __LINE__, e.GetError().c_str());
+			}
 
 			// Tell the user
 // ToDo: Use headers, close the connection cleanly
@@ -75,17 +79,19 @@ static int handle_recv(struct mg_connection *conn)
 	if (0 == last) {
 		last = 1;
 		try {
-			POSTParser = new MPFD::Parser();
-			POSTParser->SetTempDirForFileUpload("/tmp");
-			// Use 16Mb max POSTParser->SetMaxCollectedDataLength(1024*1024);
-			POSTParser->SetContentType("multipart/form-data;boundary=----");
+			POSTParser = new MPFD::Parser(
+				mg_get_header(conn, "Content-Type"));
 		} catch (MPFD::Exception e) {
-			printf("Oops\n");
+			printf(__FILE__ " %d: %s\n", __LINE__, e.GetError().c_str());
 			return false;
 		}
 	}
 
-	POSTParser->AcceptSomeData(conn->content, conn->content_len);
+	try {
+		POSTParser->AcceptSomeData(conn->content, conn->content_len);
+	} catch (MPFD::Exception e) {
+		printf(__FILE__ " %d: %s\n", __LINE__, e.GetError().c_str());
+	}
 	return conn->content_len;
 }
 
