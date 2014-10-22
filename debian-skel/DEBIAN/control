@@ -1,0 +1,9 @@
+Package: libmpfd
+Version: 0.0-1
+Section: contrib/misc
+Priority: optional
+Architecture: amd64
+Depends: libc6
+Maintainer: Jonathan Ben-Avraham <yba@tkos.co.il>
+Description: Multipart Form File Uploader
+ Uploads files vi multipart forms

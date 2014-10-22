@@ -151,6 +151,7 @@ void MPFD::Parser::_ProcessData()
 		NeedToRepeat = false;
 		switch (CurrentStatus) {
 			case Status_LookingForStartingBoundary:
+printf(": case Status_LookingForStartingBoundary\n");
 				if (FindStartingBoundaryAndTruncData()) {
 					CurrentStatus = Status_ProcessingHeaders;
 					NeedToRepeat = true;
@@ -158,6 +159,7 @@ void MPFD::Parser::_ProcessData()
 				break;
 
 			case Status_ProcessingHeaders:
+printf(": case Status_ProcessingHeaders\n");
 				if (WaitForHeadersEndAndParseThem()) {
 					CurrentStatus =
 						Status_ProcessingContentOfTheField;
@@ -166,6 +168,7 @@ void MPFD::Parser::_ProcessData()
 				break;
 
 			case Status_ProcessingContentOfTheField:
+printf(": case ProcessContentOfTheField\n");
 				if (ProcessContentOfTheField()) {
 					CurrentStatus = 
 						Status_LookingForStartingBoundary;
@@ -215,6 +218,7 @@ bool MPFD::Parser::ProcessContentOfTheField()
  */
 bool MPFD::Parser::WaitForHeadersEndAndParseThem()
 {
+printf(":::WaitForHeadersEndAndParseThem\n");
 	for (int i = 0; i < DataCollectorLength - 3; i++)
 	{
 		if ((DataCollector[i] == 13) &&
@@ -267,6 +271,7 @@ std::string MPFD::Parser::GetTempDirForFileUpload() {
  */
 void MPFD::Parser::_ParseHeaders(std::string headers)
 {
+printf("::::_ParseHeaders\n");
 	// Check if it is form data
 
 	if (headers.find("Content-Disposition: form-data;") == std::string::npos)
@@ -293,6 +298,7 @@ void MPFD::Parser::_ParseHeaders(std::string headers)
 	ProcessingFieldName = headers.substr(name_pos + 6,
 		name_end_pos - (name_pos + 6));
 
+printf("::::ProcessingFieldName is [%s]\n", ProcessingFieldName.c_str());
 	Fields[ProcessingFieldName] = new Field();
 
 	// Find filename if exists
@@ -317,6 +323,7 @@ void MPFD::Parser::_ParseHeaders(std::string headers)
 
 	std::string filename = headers.substr(filename_pos + 10,
 		filename_end_pos - (filename_pos + 10));
+printf("::::filename is [%s]\n", filename.c_str());
 
 	Fields[ProcessingFieldName]->SetFileName(filename);
 

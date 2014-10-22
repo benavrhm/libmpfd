@@ -18,6 +18,7 @@ int last = 0;
 
 static int handle_request(struct mg_connection *conn)
 {
+printf("Request\n");
 	if (strcmp(conn->uri, "/upload") == 0)
 	{
 		if (last)
@@ -76,22 +77,28 @@ static int handle_request(struct mg_connection *conn)
 // When last POST chunk is received, Mongoose sends MG_REQUEST, then MG_CLOSE.
 static int handle_recv(struct mg_connection *conn)
 {
+printf("revc\n");
 	if (0 == last) {
 		last = 1;
 		try {
+printf("try\n");
 			POSTParser = new MPFD::Parser(
 				mg_get_header(conn, "Content-Type"));
 		} catch (MPFD::Exception e) {
+printf("exception\n");
 			printf(__FILE__ " %d: %s\n", __LINE__, e.GetError().c_str());
 			return false;
 		}
+printf("ok\n");
 	}
 
 	try {
 		POSTParser->AcceptSomeData(conn->content, conn->content_len);
 	} catch (MPFD::Exception e) {
+printf("exception\n");
 		printf(__FILE__ " %d: %s\n", __LINE__, e.GetError().c_str());
 	}
+printf("ok\n");
 	return conn->content_len;
 }
 
@@ -105,6 +112,7 @@ static int handle_close(struct mg_connection *conn)
 
 static int ev_handler(struct mg_connection *conn, enum mg_event ev)
 {
+printf("Event\n");
 	switch (ev)
 	{
 		case MG_AUTH:     return MG_TRUE;
