@@ -30,7 +30,7 @@ clean :
 
 deb :
 	rm -rf ./$(_MPFD); \
-	rsync -avz --exclude=.svn ./debian-skel/ $(_MPFD)
+	rsync -avz --exclude=.gitignore ./debian-skel/ $(_MPFD)
 	#
 	# Copy in the libs
 	rsync -avz $(MPFD)/libmpfd/.libs/   $(_MPFD)/usr/lib; \
